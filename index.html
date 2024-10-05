@@ -7,15 +7,14 @@
     <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script src="https://unpkg.com/recharts@2.1.9/umd/Recharts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.1.9/Recharts.js" integrity="sha512-3YFlWvCIt9jrdD6iFanwdgUiPXPEiDXZK7oZn0I3yWEH60TQJtt+1QiIvSOtQYb5OkgzeFCIXIaV+uLVGjMpw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
     <div id="dashboard-root"></div>
 
     <script type="text/babel">
         const { useState } = React;
-        const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } = Recharts;
-
+        
         const BudgetDashboard = () => {
             const [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -50,6 +49,17 @@
             const filteredData = selectedCategory === 'All' 
                 ? budgetData 
                 : budgetData.filter(item => item.category === selectedCategory);
+
+            if (typeof Recharts === 'undefined') {
+                return (
+                    <div style={{padding: '1rem', fontFamily: 'Arial, sans-serif'}}>
+                        <h2>Error: Recharts library not loaded</h2>
+                        <p>Please check your internet connection and reload the page.</p>
+                    </div>
+                );
+            }
+
+            const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } = Recharts;
 
             return (
                 <div style={{padding: '1rem', fontFamily: 'Arial, sans-serif'}}>
